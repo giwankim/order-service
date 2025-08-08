@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.5.4"
     id("io.spring.dependency-management") version "1.1.7"
+    id("com.diffplug.spotless") version "7.2.1"
 }
 
 group = "com.polarbookshop"
@@ -35,10 +36,8 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-    runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly("io.asyncer:r2dbc-mysql")
-    runtimeOnly("io.r2dbc:r2dbc-h2")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -58,4 +57,12 @@ dependencyManagement {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+spotless {
+    java {
+        removeUnusedImports()
+        googleJavaFormat().reorderImports(true)
+        formatAnnotations()
+    }
 }
