@@ -1,7 +1,7 @@
 package com.polarbookshop.orderservice.order.domain;
 
-import com.polarbookshop.orderservice.config.DataConfig;
 import com.polarbookshop.orderservice.TestcontainersConfiguration;
+import com.polarbookshop.orderservice.config.DataConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 import org.springframework.context.annotation.Import;
@@ -21,7 +21,8 @@ record OrderRepositoryR2dbcTest(OrderRepository orderRepository) {
   @Test
   void createRejectedOrder() {
     Order rejectedOrder = OrderService.createRejectedOrder("1234567890", 3);
-    orderRepository.save(rejectedOrder)
+    orderRepository
+        .save(rejectedOrder)
         .as(StepVerifier::create)
         .expectNextMatches(order -> order.status().equals(OrderStatus.REJECTED))
         .verifyComplete();
