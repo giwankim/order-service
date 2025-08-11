@@ -44,3 +44,12 @@ jobs:
       contents: read
       packages: write
       security-events: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'liberica'
+          java-version: '24'
+          cache: 'gradle'
