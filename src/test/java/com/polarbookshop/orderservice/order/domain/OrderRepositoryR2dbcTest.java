@@ -20,7 +20,7 @@ record OrderRepositoryR2dbcTest(OrderRepository orderRepository) {
 
   @Test
   void createRejectedOrder() {
-    Order rejectedOrder = OrderService.createRejectedOrder("1234567890", 3);
+    Order rejectedOrder = OrderService.buildRejectedOrder("1234567890", 3);
     orderRepository
         .save(rejectedOrder)
         .as(StepVerifier::create)
