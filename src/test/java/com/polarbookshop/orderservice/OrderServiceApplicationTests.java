@@ -27,17 +27,13 @@ import reactor.core.publisher.Mono;
 @Testcontainers
 class OrderServiceApplicationTests {
 
-  @Autowired
-  WebTestClient webClient;
+  @Autowired WebTestClient webClient;
 
-  @MockitoBean
-  BookClient bookClient;
+  @MockitoBean BookClient bookClient;
 
-  @Autowired
-  OutputDestination output;
+  @Autowired OutputDestination output;
 
-  @Autowired
-  ObjectMapper objectMapper;
+  @Autowired ObjectMapper objectMapper;
 
   @Test
   void whenGetOrdersThenReturn() throws IOException {
