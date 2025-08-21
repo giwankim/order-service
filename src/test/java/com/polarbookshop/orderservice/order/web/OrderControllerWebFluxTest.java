@@ -27,7 +27,7 @@ class OrderControllerWebFluxTest {
     String isbn = "1234567890";
     int quantity = 3;
 
-    Order expectedOrder = OrderService.createRejectedOrder(isbn, quantity);
+    Order expectedOrder = OrderService.buildRejectedOrder(isbn, quantity);
     when(orderService.submitOrder(isbn, quantity)).thenReturn(Mono.just(expectedOrder));
 
     webClient
