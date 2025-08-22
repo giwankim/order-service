@@ -47,6 +47,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation(platform("com.squareup.okhttp3:okhttp-bom:5.1.0"))
     testImplementation("com.squareup.okhttp3:mockwebserver")
+    testImplementation("org.wiremock.integrations:wiremock-spring-boot:3.10.6")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("io.projectreactor:reactor-test")
