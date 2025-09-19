@@ -5,7 +5,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.notFound;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,15 +32,19 @@ import reactor.test.StepVerifier;
 @Testcontainers
 @Import({TestChannelBinderConfiguration.class, TestcontainersConfiguration.class})
 @EnableWireMock
-class OrderServiceTest {
+class OrderServiceTest2 {
 
-  @Autowired OrderService orderService;
+  @Autowired
+  OrderService2 orderService;
 
-  @Autowired OrderRepository orderRepository;
+  @Autowired
+  OrderRepository2 orderRepository;
 
-  @Autowired OutputDestination output;
+  @Autowired
+  OutputDestination output;
 
-  @Autowired ObjectMapper objectMapper;
+  @Autowired
+  ObjectMapper objectMapper;
 
   @BeforeEach
   void setUp() {
@@ -100,7 +103,7 @@ class OrderServiceTest {
   void consumeOrderDispatchedEvent() {
     String isbn = "1234567893";
     Book book = new Book(isbn, "Title", "Author", 9.90);
-    Order acceptedOrder = orderRepository.save(OrderService.buildAcceptedOrder(book, 3)).block();
+    Order2 acceptedOrder = orderRepository.save(OrderService2.buildAcceptedOrder(book, 3)).block();
 
     OrderDispatchedMessage dispatchedMessage = new OrderDispatchedMessage(acceptedOrder.id());
     orderService
