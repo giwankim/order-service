@@ -60,7 +60,7 @@ dependencies {
 
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("org.postgresql:r2dbc-postgresql")
-    runtimeOnly("io.netty:netty-resolver-dns-native-macos")
+    runtimeOnly("io.netty:netty-resolver-dns-native-macos::osx-aarch_64")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation(platform("com.squareup.okhttp3:okhttp-bom:5.1.0"))
     testImplementation("com.squareup.okhttp3:mockwebserver")
