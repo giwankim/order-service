@@ -10,6 +10,7 @@ spring:
     name: order-service
   lifecycle:
     timeout-per-shutdown-phase: 15s
+  # database
   r2dbc:
     username: user
     password: password
@@ -22,6 +23,7 @@ spring:
     user: ${spring.r2dbc.username}
     password: ${spring.r2dbc.password}
     url: jdbc:postgresql://localhost:5432/polardb_order
+  # config server
   config:
     import: "optional:configserver:"
   cloud:
@@ -56,5 +58,6 @@ spring:
     password: password
     connection-timeout: 5s
 
+# configuration properties
 polar:
   catalog-service-url: http://localhost:9001
