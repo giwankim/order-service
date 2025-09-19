@@ -60,4 +60,4 @@ spring:
 
 # configuration properties
 polar:
-  catalog-service-url: http://localhost:9001
+  catalog-service-uri: http://localhost:9001
