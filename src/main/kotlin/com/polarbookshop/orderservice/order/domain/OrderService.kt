@@ -33,12 +33,11 @@ class OrderService(
             .doOnNext(::publishOrderAcceptedEvent)
 
     private fun publishOrderAcceptedEvent(order: Order) {
-        val message = (
+        val message =
             order
                 .takeIf { it.status == OrderStatus.ACCEPTED }
                 ?.let { OrderAcceptedMessage(it.id) }
                 ?: return
-        )
 
         logger.info { "Sending order accepted event with id: ${order.id}" }
         streamBridge.send("acceptOrder-out-0", message).also { result ->
