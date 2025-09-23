@@ -10,7 +10,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "ORDERS")
 @Builder
-public record Order(
+public record Order2(
     @Id Long id,
     String bookIsbn,
     String bookName,
@@ -20,9 +20,9 @@ public record Order(
     @CreatedDate Instant createdDate,
     @LastModifiedDate Instant lastModifiedDate,
     @Version int version) {
-  public static Order create(
+  public static Order2 create(
       String bookIsbn, String bookName, Double bookPrice, Integer quantity, OrderStatus status) {
-    return Order.builder()
+    return Order2.builder()
         .id(null)
         .bookIsbn(bookIsbn)
         .bookName(bookName)

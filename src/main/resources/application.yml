@@ -10,7 +10,7 @@ spring:
     name: order-service
   lifecycle:
     timeout-per-shutdown-phase: 15s
-  # database
+  # Database
   r2dbc:
     username: user
     password: password
@@ -23,7 +23,7 @@ spring:
     user: ${spring.r2dbc.username}
     password: ${spring.r2dbc.password}
     url: jdbc:postgresql://localhost:5432/polardb_order
-  # config server
+  # Config server
   config:
     import: "optional:configserver:"
   cloud:
@@ -37,6 +37,7 @@ spring:
         initial-interval: 1000
         max-interval: 2000
         multiplier: 1.1
+    # Cloud Stream
     function:
       definition: dispatchOrder
     stream:
@@ -51,6 +52,7 @@ spring:
           acceptOrder-out-0:
             producer:
               transacted: true
+  # RabbitMQ
   rabbitmq:
     host: localhost
     port: 5672
@@ -58,6 +60,6 @@ spring:
     password: password
     connection-timeout: 5s
 
-# configuration properties
+# Book client configuration
 polar:
   catalog-service-uri: http://localhost:9001

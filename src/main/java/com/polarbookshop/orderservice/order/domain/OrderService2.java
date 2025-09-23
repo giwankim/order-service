@@ -15,18 +15,18 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class OrderService {
+public class OrderService2 {
 
   private final BookClient bookClient;
-  private final OrderRepository orderRepository;
+  private final OrderRepository2 orderRepository;
   private final StreamBridge streamBridge;
 
-  public Flux<Order> getAllOrders() {
+  public Flux<Order2> getAllOrders() {
     return orderRepository.findAll();
   }
 
   @Transactional
-  public Mono<Order> submitOrder(String isbn, int quantity) {
+  public Mono<Order2> submitOrder(String isbn, int quantity) {
     return bookClient
         .getBookByIsbn(isbn)
         .map(book -> buildAcceptedOrder(book, quantity))
@@ -35,20 +35,20 @@ public class OrderService {
         .doOnNext(this::publishOrderAcceptedEvent);
   }
 
-  public static Order buildAcceptedOrder(Book book, int quantity) {
-    return Order.create(
-        book.isbn(),
-        book.title() + " - " + book.author(),
-        book.price(),
+  public static Order2 buildAcceptedOrder(Book book, int quantity) {
+    return Order2.create(
+        book.getIsbn(),
+        book.getTitle() + " - " + book.getAuthor(),
+        book.getPrice(),
         quantity,
         OrderStatus.ACCEPTED);
   }
 
-  public static Order buildRejectedOrder(String bookIsbn, int quantity) {
-    return Order.create(bookIsbn, null, null, quantity, OrderStatus.REJECTED);
+  public static Order2 buildRejectedOrder(String bookIsbn, int quantity) {
+    return Order2.create(bookIsbn, null, null, quantity, OrderStatus.REJECTED);
   }
 
-  private void publishOrderAcceptedEvent(Order order) {
+  private void publishOrderAcceptedEvent(Order2 order) {
     if (!order.status().equals(OrderStatus.ACCEPTED)) {
       return;
     }
@@ -58,15 +58,15 @@ public class OrderService {
     log.info("Result of sending data for order with id {}: {}", order.id(), result);
   }
 
-  public Flux<Order> consumeOrderDispatchedEvent(Flux<OrderDispatchedMessage> flux) {
+  public Flux<Order2> consumeOrderDispatchedEvent(Flux<OrderDispatchedMessage> flux) {
     // can further optimize by skipping the operation if order is already DISPATCHED
-    return flux.flatMap(message -> orderRepository.findById(message.orderId()))
-        .map(OrderService::buildDispatchedOrder)
+    return flux.flatMap(message -> orderRepository.findById(message.getOrderId()))
+        .map(OrderService2::buildDispatchedOrder)
         .flatMap(orderRepository::save);
   }
 
-  private static Order buildDispatchedOrder(Order order) {
-    return Order.builder()
+  private static Order2 buildDispatchedOrder(Order2 order) {
+    return Order2.builder()
         .id(order.id())
         .bookIsbn(order.bookIsbn())
         .bookName(order.bookName())

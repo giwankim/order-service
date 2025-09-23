@@ -12,7 +12,7 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
 
 @WebFluxTest(OrderController::class)
-class OrderControllerTests(
+class OrderControllerTest(
     val webClient: WebTestClient,
 ) {
     @MockkBean

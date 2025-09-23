@@ -76,7 +76,7 @@ class OrderServiceTest2 {
 
     OrderAcceptedMessage orderAcceptedMessage =
         objectMapper.readValue(output.receive().getPayload(), OrderAcceptedMessage.class);
-    assertThat(orderAcceptedMessage.orderId()).isNotNull();
+    assertThat(orderAcceptedMessage.getOrderId()).isNotNull();
   }
 
   @Test

@@ -15,19 +15,15 @@ class Order(
     val bookPrice: Double,
     val quantity: Int,
     val status: OrderStatus,
-) {
     @Id
-    var id: Long = 0L
-
+    var id: Long = 0L,
     @CreatedDate
-    var createdDate: Instant? = null
-
+    var createdDate: Instant? = null,
     @LastModifiedDate
-    var lastModifiedDate: Instant? = null
-
+    var lastModifiedDate: Instant? = null,
     @Version
-    var version: Int = 0
-
+    var version: Int = 0,
+) {
     companion object {
         fun accepted(
             book: Book,

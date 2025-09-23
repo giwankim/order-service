@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.polarbookshop.orderservice.book.Book;
 import com.polarbookshop.orderservice.book.BookClient;
-import com.polarbookshop.orderservice.order.domain.Order;
+import com.polarbookshop.orderservice.order.domain.Order2;
 import com.polarbookshop.orderservice.order.domain.OrderStatus;
 import com.polarbookshop.orderservice.order.event.OrderAcceptedMessage;
 import com.polarbookshop.orderservice.order.web.OrderRequest;
@@ -25,11 +25,12 @@ import reactor.core.publisher.Mono;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import({TestcontainersConfiguration.class, TestChannelBinderConfiguration.class})
 @Testcontainers
-class OrderServiceApplicationTests {
+class OrderServiceApplicationTests2 {
 
   @Autowired WebTestClient webClient;
 
-  @MockitoBean BookClient bookClient;
+  @MockitoBean
+  BookClient bookClient;
 
   @Autowired OutputDestination output;
 
@@ -42,7 +43,7 @@ class OrderServiceApplicationTests {
     when(bookClient.getBookByIsbn(isbn)).thenReturn(Mono.just(book));
 
     OrderRequest orderRequest = new OrderRequest(isbn, 1);
-    Order order =
+    Order2 order =
         webClient
             .post()
             .uri("/orders")
@@ -50,7 +51,7 @@ class OrderServiceApplicationTests {
             .exchange()
             .expectStatus()
             .is2xxSuccessful()
-            .expectBody(Order.class)
+            .expectBody(Order2.class)
             .returnResult()
             .getResponseBody();
     assertThat(order).isNotNull();
@@ -65,7 +66,7 @@ class OrderServiceApplicationTests {
     when(bookClient.getBookByIsbn(isbn)).thenReturn(Mono.just(book));
 
     OrderRequest orderRequest = new OrderRequest(isbn, 3);
-    Order order =
+    Order2 order =
         webClient
             .post()
             .uri("/orders")
@@ -73,15 +74,15 @@ class OrderServiceApplicationTests {
             .exchange()
             .expectStatus()
             .is2xxSuccessful()
-            .expectBody(Order.class)
+            .expectBody(Order2.class)
             .returnResult()
             .getResponseBody();
 
     assertThat(order).isNotNull();
     assertThat(order.bookIsbn()).isEqualTo(isbn);
-    assertThat(order.quantity()).isEqualTo(orderRequest.quantity());
-    assertThat(order.bookName()).isEqualTo(book.title() + " - " + book.author());
-    assertThat(order.bookPrice()).isEqualTo(book.price());
+    assertThat(order.quantity()).isEqualTo(orderRequest.getQuantity());
+    assertThat(order.bookName()).isEqualTo(book.getTitle() + " - " + book.getAuthor());
+    assertThat(order.bookPrice()).isEqualTo(book.getPrice());
     assertThat(order.status()).isEqualTo(OrderStatus.ACCEPTED);
 
     OrderAcceptedMessage orderAcceptedMessage =
@@ -95,7 +96,7 @@ class OrderServiceApplicationTests {
     when(bookClient.getBookByIsbn(isbn)).thenReturn(Mono.empty());
 
     OrderRequest orderRequest = new OrderRequest(isbn, 3);
-    Order order =
+    Order2 order =
         webClient
             .post()
             .uri("/orders")
@@ -103,13 +104,13 @@ class OrderServiceApplicationTests {
             .exchange()
             .expectStatus()
             .is2xxSuccessful()
-            .expectBody(Order.class)
+            .expectBody(Order2.class)
             .returnResult()
             .getResponseBody();
 
     assertThat(order).isNotNull();
     assertThat(order.bookIsbn()).isEqualTo(isbn);
-    assertThat(order.quantity()).isEqualTo(orderRequest.quantity());
+    assertThat(order.quantity()).isEqualTo(orderRequest.getQuantity());
     assertThat(order.status()).isEqualTo(OrderStatus.REJECTED);
   }
 }

@@ -3,8 +3,8 @@ package com.polarbookshop.orderservice.order.event;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.polarbookshop.orderservice.TestcontainersConfiguration;
-import com.polarbookshop.orderservice.order.domain.Order;
-import com.polarbookshop.orderservice.order.domain.OrderRepository;
+import com.polarbookshop.orderservice.order.domain.Order2;
+import com.polarbookshop.orderservice.order.domain.OrderRepository2;
 import com.polarbookshop.orderservice.order.domain.OrderStatus;
 import java.time.Duration;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,11 +22,13 @@ import reactor.test.StepVerifier;
 @SpringBootTest
 @Import({TestChannelBinderConfiguration.class, TestcontainersConfiguration.class})
 @Testcontainers
-class OrderFunctionsTest {
+class OrderFunctionsTest2 {
 
-  @Autowired InputDestination input;
+  @Autowired
+  InputDestination input;
 
-  @Autowired OrderRepository orderRepository;
+  @Autowired
+  OrderRepository2 orderRepository;
 
   @BeforeEach
   void setUp() {
@@ -35,15 +37,15 @@ class OrderFunctionsTest {
 
   @Test
   void dispatchOrder() {
-    Order order =
+    Order2 order =
         orderRepository
-            .save(Order.create("12345678890", "Book", 9.90, 3, OrderStatus.ACCEPTED))
+            .save(Order2.create("12345678890", "Book", 9.90, 3, OrderStatus.ACCEPTED))
             .block();
 
     var inputMessage = MessageBuilder.withPayload(new OrderDispatchedMessage(order.id())).build();
     input.send(inputMessage);
 
-    Mono<Order> eventuallyDispatched =
+    Mono<Order2> eventuallyDispatched =
         orderRepository
             .findById(order.id())
             .filter(o -> o.status().equals(OrderStatus.DISPATCHED))
