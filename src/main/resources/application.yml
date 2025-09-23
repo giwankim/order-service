@@ -47,6 +47,7 @@ spring:
           group: ${spring.application.name}
         acceptOrder-out-0:
           destination: order-accepted
+      # Enable RabbitMQ transaction support
       rabbit:
         bindings:
           acceptOrder-out-0:
