@@ -3,7 +3,10 @@ package com.polarbookshop.orderservice
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.client.WireMock.*
+import com.github.tomakehurst.wiremock.client.WireMock.get
+import com.github.tomakehurst.wiremock.client.WireMock.notFound
+import com.github.tomakehurst.wiremock.client.WireMock.okJson
+import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.polarbookshop.orderservice.book.Book
 import com.polarbookshop.orderservice.order.domain.Order
 import com.polarbookshop.orderservice.order.domain.OrderRepository
@@ -48,9 +51,10 @@ class OrderServiceApplicationTests(
         val isbn = "1234567893"
         val book = Book(isbn = isbn, title = "Title", author = "Author", price = 9.90)
         stubFor(
-            get(urlEqualTo("/books/$isbn"))
+            get("/books/$isbn")
                 .willReturn(okJson(objectMapper.writeValueAsString(book))),
         )
+
         // submit order
         webClient
             .post()
@@ -63,7 +67,7 @@ class OrderServiceApplicationTests(
             .returnResult()
             .responseBody!!
 
-        // submitted order should be one of the results
+        // get orders
         val orders =
             webClient
                 .get()
@@ -75,6 +79,7 @@ class OrderServiceApplicationTests(
                 .returnResult()
                 .responseBody!!
 
+        // should contain the submitted order
         assertThat(orders).extracting<String>(Order::bookIsbn).contains(isbn)
     }
 
@@ -83,7 +88,7 @@ class OrderServiceApplicationTests(
         val isbn = "1234567899"
         val book = Book(isbn = isbn, title = "Title", author = "Author", price = 9.90)
         stubFor(
-            get(urlEqualTo("/books/$isbn"))
+            get("/books/$isbn")
                 .willReturn(okJson(objectMapper.writeValueAsString(book))),
         )
 
@@ -115,7 +120,7 @@ class OrderServiceApplicationTests(
     @Test
     fun `submit order and book does not exist then order is rejected`() {
         val isbn = "1234567894"
-        stubFor(get(urlEqualTo("/books/$isbn")).willReturn(notFound()))
+        stubFor(get("/books/$isbn").willReturn(notFound()))
 
         val orderRequest = OrderRequest(isbn, 3)
         val order =
