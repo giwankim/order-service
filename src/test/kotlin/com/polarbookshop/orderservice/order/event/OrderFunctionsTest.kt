@@ -21,24 +21,24 @@ class OrderFunctionsTest {
 
     @Test
     fun `dispatch order`() {
-
         val orderId = 121L
         val messages = Flux.just(OrderDispatchedMessage(orderId))
         val subscribed = AtomicBoolean()
         val orders =
-            Flux.just(
-                Order(
-                    bookIsbn = "1234567890",
-                    bookName = "The Hobbit",
-                    bookPrice = 9.90,
-                    quantity = 1,
-                    status = OrderStatus.DISPATCHED,
-                    id = orderId,
-                    createdDate = Instant.now(),
-                    lastModifiedDate = Instant.now(),
-                    version = 21,
-                ),
-            ).doOnSubscribe { subscribed.set(true) }
+            Flux
+                .just(
+                    Order(
+                        bookIsbn = "1234567890",
+                        bookName = "The Hobbit",
+                        bookPrice = 9.90,
+                        quantity = 1,
+                        status = OrderStatus.DISPATCHED,
+                        id = orderId,
+                        createdDate = Instant.now(),
+                        lastModifiedDate = Instant.now(),
+                        version = 21,
+                    ),
+                ).doOnSubscribe { subscribed.set(true) }
         every { orderService.consumeOrderDispatchedEvent(any()) } returns orders
 
         OrderFunctions().dispatchOrder(orderService).accept(messages)

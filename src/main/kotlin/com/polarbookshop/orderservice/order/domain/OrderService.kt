@@ -27,7 +27,7 @@ class OrderService(
     ): Mono<Order> =
         bookClient
             .getBookByIsbn(isbn)
-            .map { Order.accepted(it, quantity) }
+            .map { book -> Order.accepted(book, quantity) }
             .defaultIfEmpty(Order.rejected(isbn, quantity))
             .flatMap(orderRepository::save)
             .doOnNext(::publishOrderAcceptedEvent)
