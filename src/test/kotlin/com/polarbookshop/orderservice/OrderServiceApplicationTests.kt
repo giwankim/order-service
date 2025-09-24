@@ -3,11 +3,7 @@ package com.polarbookshop.orderservice
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.client.WireMock.get
-import com.github.tomakehurst.wiremock.client.WireMock.notFound
-import com.github.tomakehurst.wiremock.client.WireMock.okJson
-import com.github.tomakehurst.wiremock.client.WireMock.stubFor
-import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.polarbookshop.orderservice.book.Book
 import com.polarbookshop.orderservice.order.domain.Order
 import com.polarbookshop.orderservice.order.domain.OrderRepository
@@ -15,7 +11,6 @@ import com.polarbookshop.orderservice.order.domain.OrderStatus
 import com.polarbookshop.orderservice.order.event.OrderAcceptedMessage
 import com.polarbookshop.orderservice.order.web.OrderRequest
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -41,7 +36,6 @@ class OrderServiceApplicationTests(
     val objectMapper: ObjectMapper,
     val orderRepository: OrderRepository,
 ) {
-
     @BeforeEach
     fun setUp() {
         orderRepository.deleteAll().block()
