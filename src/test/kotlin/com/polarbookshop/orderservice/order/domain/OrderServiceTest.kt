@@ -12,7 +12,6 @@ import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cloud.stream.binder.test.OutputDestination
 import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration
@@ -29,8 +28,7 @@ class OrderServiceTest(
     val orderService: OrderService,
     val output: OutputDestination,
     val objectMapper: ObjectMapper,
-    @Autowired val orderRepository: OrderRepository,
-    repository: OrderRepository,
+    val orderRepository: OrderRepository,
 ) {
     @MockkBean
     lateinit var bookClient: BookClient

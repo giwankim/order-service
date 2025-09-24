@@ -1,9 +1,6 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
-    // java
-    java
-
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
     id("org.springframework.boot") version "3.5.6"
@@ -18,13 +15,6 @@ description = "Provides functionality for ordering books."
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
-// java
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
     }
 }
 
@@ -51,13 +41,6 @@ dependencies {
     implementation("org.springframework.retry:spring-retry")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-
-    // java
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-    testCompileOnly("org.projectlombok:lombok")
-    testAnnotationProcessor("org.projectlombok:lombok")
-
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("org.postgresql:r2dbc-postgresql")
     runtimeOnly("io.netty:netty-resolver-dns-native-macos::osx-aarch_64")
