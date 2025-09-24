@@ -15,7 +15,7 @@ class OrderFunctions {
     fun dispatchOrder(orderService: OrderService): Consumer<Flux<OrderDispatchedMessage>> =
         Consumer { messages ->
             orderService
-                .consumerOrderDispatchedEvent(messages)
+                .consumeOrderDispatchedEvent(messages)
                 .doOnNext { order ->
                     logger.info { "The order with id $order is dispatched" }
                 }.subscribe()

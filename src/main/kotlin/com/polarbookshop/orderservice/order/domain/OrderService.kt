@@ -45,7 +45,7 @@ class OrderService(
         }
     }
 
-    fun consumerOrderDispatchedEvent(messages: Flux<OrderDispatchedMessage>): Flux<Order> =
+    fun consumeOrderDispatchedEvent(messages: Flux<OrderDispatchedMessage>): Flux<Order> =
         messages
             .flatMap { message -> orderRepository.findById(message.orderId) }
             .map(Order::dispatched)

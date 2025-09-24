@@ -49,4 +49,10 @@ class Order(
                 status = OrderStatus.REJECTED,
             )
     }
+
+    override fun toString(): String {
+        return "Order(bookIsbn='$bookIsbn', bookName='$bookName', bookPrice=$bookPrice, quantity=$quantity, status=$status, id=$id, createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, version=$version)"
+    }
+
+
 }
